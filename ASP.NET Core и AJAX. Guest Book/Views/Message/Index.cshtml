@@ -1,0 +1,35 @@
+﻿@model IEnumerable<ASP.NET_Core_и_AJAX._Guest_Book.Models.Message>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br>
+<div>
+    @if (Context.Session.GetString("Login") != null)
+    {
+        <form asp-action="addMessage">
+            <div class="div_h1">
+                <h1 class="h1_n"> Сообщения </h1>
+            </div>
+            <div class="div_text_area">
+                <textarea name="mes_text" class="text_area" cols="30" rows="10"></textarea>
+            </div>
+
+            <div class="div_com div_com3v">
+                <input class="input_subm" type="submit" value="Отправить" />
+            </div>
+        </form>
+    }
+     
+    @foreach (var item in Model)
+    {
+        <br />
+        <div class="div_mess">
+            <label class="label1">@item.User.Login</label>
+            <p class="p1">@item.MessageText</p>
+            <label class="label2">@item.MessageDate</label>
+        </div>
+    }
+</div>

@@ -1,0 +1,93 @@
+﻿@model ASP.NET_Core_и_AJAX._Guest_Book.Models.RegisterModel
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br>
+<div>
+    <div class="dv1">
+        <div class="div_h1">
+            <h1 class="h1_n">Register </h1>
+        </div>
+        <div>
+            <form asp-action="Register">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <br>
+                <div class="div_com_t">
+                    <span asp-validation-for="Login" class="span_error"></span>
+                    <div class="div_com_t1">
+                        <label asp-for="Login" class="label"></label>
+                        <input asp-for="Login" class="input1" type="text" />
+                    </div>
+                </div>
+
+                <div class="div_com_t">
+                    <span asp-validation-for="Password" class="span_error"></span>
+                    <div class="div_com_t1">
+                        <label asp-for="Password" class="label"></label>
+                        <input asp-for="Password" class="input1" type="text" />
+                    </div>
+                </div>
+
+                <div class="div_com_t">
+                    <span asp-validation-for="PasswordConfirm" class="span_error"></span>
+                    <div class="div_com_t1">
+                        <label asp-for="PasswordConfirm" class="label"></label>
+                        <input asp-for="PasswordConfirm" class="input1" type="text" />
+                    </div>
+                </div>
+
+                <div class=" div_subm" style="margin-top: 120px;">
+                    <input class="input_subm" type="submit" value="Check in" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+@* <h1>Registration</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Register">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Login" class="control-label"></label>
+                <input asp-for="Login" class="form-control" />
+                <span asp-validation-for="Login" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PasswordConfirm" class="control-label"></label>
+                <input asp-for="PasswordConfirm" class="form-control" />
+                <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Check in" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div> *@
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
