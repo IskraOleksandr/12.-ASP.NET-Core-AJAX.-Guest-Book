@@ -8,7 +8,7 @@ namespace ASP.NET_Core_и_AJAX._Guest_Book.Controllers
 {
     public class UserController : Controller
     {
-        IRepository _repository; 
+        IRepository _repository;
 
         public UserController(IRepository repository)
         {
@@ -20,50 +20,43 @@ namespace ASP.NET_Core_и_AJAX._Guest_Book.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost] 
         public async Task<IActionResult> Login(LoginModel logon)
         {
             if (ModelState.IsValid)
             {
                 var users = await _repository.GetUsers();
                 if (users.Count == 0)
-                {
-                    ModelState.AddModelError("", "Не коректный логин или пароль!");
-                    return View(logon);
+                { 
+                    return Json("Не верный логин или пароль!");
                 }
                 var users_t = users.Where(a => a.Login == logon.Login);
                 if (users_t.ToList().Count == 0)
-                {
-                    ModelState.AddModelError("", "Не коректный логин или пароль!");
-                    return View(logon);
+                { 
+                    return Json("Не верный логин или пароль!");
                 }
                 var user = users_t.First();
                 string? salt = user.Salt;
 
-                //переводим пароль в байт-массив  
-                byte[] password = Encoding.Unicode.GetBytes(salt + logon.Password);
-
-                //создаем объект для получения средств шифрования  
-                var md5 = MD5.Create();
-
-                //вычисляем хеш-представление в байтах  
-                byte[] byteHash = md5.ComputeHash(password);
+                byte[] password = Encoding.Unicode.GetBytes(salt + logon.Password);//переводим пароль в байт-массив   
+                var md5 = MD5.Create();//создаем объект для получения средств шифрования   
+                byte[] byteHash = md5.ComputeHash(password);//вычисляем хеш-представление в байтах 
 
                 StringBuilder hash = new StringBuilder(byteHash.Length);
                 for (int i = 0; i < byteHash.Length; i++)
                     hash.Append(string.Format("{0:X2}", byteHash[i]));
 
                 if (user.Password != hash.ToString())
-                {
-                    ModelState.AddModelError("", "Не коректный логин или пароль!");
-                    return View(logon);
+                { 
+                    return Json("Не верный логин или пароль!"); 
                 }
                 HttpContext.Session.SetString("Login", user.Login);
 
-                return RedirectToAction("Index", "Message");
+                string response = user.Login; 
+                return Json(response); 
             }
-            return View(logon);
+             
+            return Json("Не удалось зайти"); 
         }
 
         public IActionResult Register()
@@ -77,7 +70,7 @@ namespace ASP.NET_Core_и_AJAX._Guest_Book.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User(); 
+                User user = new User();
                 user.Login = reg.Login;
 
                 byte[] saltbuf = new byte[16];
@@ -90,14 +83,9 @@ namespace ASP.NET_Core_и_AJAX._Guest_Book.Controllers
                     sb.Append(string.Format("{0:X2}", saltbuf[i]));
                 string salt = sb.ToString();
 
-                //переводим пароль в байт-массив  
-                byte[] password = Encoding.Unicode.GetBytes(salt + reg.Password);
-
-                //создаем объект для получения средств шифрования  
-                var md5 = MD5.Create();
-
-                //вычисляем хеш-представление в байтах  
-                byte[] byteHash = md5.ComputeHash(password);
+                byte[] password = Encoding.Unicode.GetBytes(salt + reg.Password); //переводим пароль в байт-массив   
+                var md5 = MD5.Create();//создаем объект для получения средств шифрования   
+                byte[] byteHash = md5.ComputeHash(password);//вычисляем хеш-представление в байтах
 
                 StringBuilder hash = new StringBuilder(byteHash.Length);
                 for (int i = 0; i < byteHash.Length; i++)
@@ -108,11 +96,11 @@ namespace ASP.NET_Core_и_AJAX._Guest_Book.Controllers
 
                 await _repository.AddUser(user);
                 await _repository.Save();
-         
-                return RedirectToAction("Login");
+                string response = "Студент успешно добавлен!"; 
+                return Json(response); 
             }
 
-            return View(reg);
+            return Json("Не удалось зарегистрироватися!"); 
         }
     }
 }
