@@ -1,35 +1,269 @@
-﻿@model IEnumerable<ASP.NET_Core_и_AJAX._Guest_Book.Models.Message>
+﻿@model StoringPassword.Models.RegisterModel
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<br>
-<div>
-    @if (Context.Session.GetString("Login") != null)
-    {
-        <form asp-action="addMessage">
-            <div class="div_h1">
-                <h1 class="h1_n"> Сообщения </h1>
-            </div>
-            <div class="div_text_area">
-                <textarea name="mes_text" class="text_area" cols="30" rows="10"></textarea>
-            </div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
 
-            <div class="div_com div_com3v">
-                <input class="input_subm" type="submit" value="Отправить" />
-            </div>
-        </form>
+            getAllMessages();
+
+            $('#g2').bind('click', function (event) {
+                if ($('#dv2').css("display") == "block")
+                    $('#dv2').css("display", "none");
+                //
+                else if ($('#dv2').css("display") == "none") {
+                    $('#dv2').css("display", "block");
+                    $('#dv3').css("display", "none");
+                    reset_Reg_Form();
+                }
+            });
+
+            $('#g3').bind('click', function (event) {
+                if ($('#dv3').css("display") == "block")
+                    $('#dv3').css("display", "none");
+                else if ($('#dv3').css("display") == "none") {
+                    $('#dv3').css("display", "block");
+                    $('#dv2').css("display", "none");
+                    reset_Log_Form();
+                }
+            });
+             
+            $("#Register_Btn").on("click", function () {
+                let formData = new FormData();
+                formData.append("Login", $("#Login").val());
+                formData.append("Password", $("#Password").val());
+                formData.append("PasswordConfirm", $("#PasswordConfirm").val());
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Register", "User")',
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: function (response) {
+                        alert(response);
+                        reset_Reg_Form();
+                        $("#dv2").css("display", "none");
+                    },
+                    error: function (x, y, z) {
+                        alert(x + '\n' + y + '\n' + z);
+                    }
+                });
+            });
+
+            $("#Login_Btn").on("click", function () {
+                let formData = new FormData();
+                formData.append("Login", $("#Login1").val());
+                formData.append("Password", $("#Password1").val());
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Login", "User")',
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: function (response) {
+                        if (response != "Не верный логин или пароль!") {
+                            reset_Log_Form();
+                            $("#dv3").css("display", "none");
+                            $("#g3").css("display", "none");
+                            $("#g4").css("display", "block");
+                            $("#g5").css("display", "block");
+                            $("#g5").text("Здравствуйте, " + response);
+                            $("#message").css("display", "block");
+                        }
+                        else
+                            $("#login_error").text(response);
+                    },
+                    error: function (x, y, z) {
+                        alert(x + '\n' + y + '\n' + z);
+                    }
+                });
+            });
+
+            $("#g4").on("click", function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Logout", "Message")',
+                    contentType: false,
+                    processData: false,
+                    data: null,
+                    success: function (response) {
+                        $("#g3").css("display", "block");
+                        $("#g4").css("display", "none");
+                        $("#g5").css("display", "none");
+                        $("#message").css("display", "none");
+                        alert(response);
+                    },
+                    error: function (x, y, z) {
+                        alert(x + '\n' + y + '\n' + z);
+                    }
+                });
+            });
+
+            $("#Add_Message_Btn").on("click", function () {
+                if ($.trim($("#texta_area_mes").val()).length > 0) {
+                    let formData = new FormData();
+                    formData.append("mes_text", $("#texta_area_mes").val());
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("addMessage", "Message")',
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        success: function (response) {
+                            alert(response);
+                            $("#texta_area_mes").val("");
+                            getAllMessages();
+                        },
+                        error: function (x, y, z) {
+                            alert(x + '\n' + y + '\n' + z);
+                        }
+                    });
+                }
+                else alert("Поле сообщения должно быть заполнено");
+            });
+
+
+            let row = function (message) {
+
+                return "<br />" +
+                    "<div class='div_mess' >" +
+                    "<label class='label1' >" + message.User.Login + "</label>" +
+                    "<p class='p1' >" + message.MessageText + "</p>" +
+                    "<label class='label2' >" + message.MessageDate + " </label>" +
+                    "</div>";
+            };
+
+            function getAllMessages() {
+                $.ajax({
+                    url: '@Url.Action("GetMessages", "Message")',
+                    type: 'GET',
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        let rows = "";
+                        let messages = JSON.parse(response);
+                        $.each(messages, function (index, message) {
+                            rows += row(message);
+                        })
+                        $("#dv_mess").html(rows);
+                    },
+                    error: function (x, y, z) {
+                        alert(x + '\n' + y + '\n' + z);
+                    }
+                });
+            }
+
+            function reset_Reg_Form() {
+                $("#hdn-user-id").val("");
+                $("#Login1").val("");
+                $("#Password1").val("");
+                $("#PasswordConfirm").val("");
+            }
+
+            function reset_Log_Form() {
+                $("#Login").val("");
+                $("#Password").val("");
+            }
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-     
-    @foreach (var item in Model)
-    {
-        <br />
-        <div class="div_mess">
-            <label class="label1">@item.User.Login</label>
-            <p class="p1">@item.MessageText</p>
-            <label class="label2">@item.MessageDate</label>
+    }
+
+<br>
+<div id="dv3" style="display:none">
+    <div class="dv1">
+        <div class="div_h1">
+            <h1 class="h1_n">Вход </h1>
         </div>
-    }
+        <div>
+            <form>
+                <br>
+                <div class="div_com_t">
+                    <span class="span_error"></span>
+                    <div class="div_com_t1">
+                        <label for="Login1" class="label">Логин:</label>
+                        <input id="Login1" class="input1" type="text" />
+                    </div>
+                </div>
+
+                <div class="div_com_t">
+                    <span id="login_error" class="span_error"></span>
+                    <div class="div_com_t1">
+                        <label for="Password1" class="label">Пароль:</label>
+                        <input id="Password1" class="input1" type="password" />
+                    </div>
+                </div>
+
+                <div class=" div_subm" style="margin-top: 90px;">
+                    <input id="Login_Btn" class="input_subm" type="button" value="Войти" />
+                </div>
+            </form>
+        </div>
+
+    </div>
 </div>
+
+<br>
+<div id="dv2" style="display:none">
+    <div class="dv1">
+        <div class="div_h1">
+            <h1 class="h1_n">Register </h1>
+        </div>
+        <div>
+            <form>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <br>
+                <div class="div_com_t">
+                    <span asp-validation-for="Login" class="span_error"></span>
+                    <div class="div_com_t1">
+                        <label asp-for="Login" class="label"></label>
+                        <input asp-for="Login" id="Login" class="input1" type="text" />
+                    </div>
+                </div>
+
+                <div class="div_com_t">
+                    <span asp-validation-for="Password" class="span_error"></span>
+                    <div class="div_com_t1">
+                        <label asp-for="Password" class="label"></label>
+                        <input asp-for="Password" id="Password" class="input1" type="password" />
+                    </div>
+                </div>
+
+                <div class="div_com_t">
+                    <span asp-validation-for="PasswordConfirm" class="span_error"></span>
+                    <div class="div_com_t1">
+                        <label asp-for="PasswordConfirm" class="label"></label>
+                        <input asp-for="PasswordConfirm" id="PasswordConfirm" class="input1" type="password" />
+                    </div>
+                </div>
+
+                <div class=" div_subm" style="margin-top: 135px;">
+                    <input value="Ok" id="Register_Btn" class="input_subm" type="button" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<br>
+<div id="dv1" style="display:block">
+    <form style="display:none" id="message">
+        <div class="div_h1">
+            <h1 class="h1_n"> Сообщения </h1>
+        </div>
+        <div class="div_text_area">
+            <textarea id="texta_area_mes" placeholder="Поле должно быть заполнено" name="mes_text" class="text_area" cols="30" rows="10"></textarea>
+        </div>
+        <div class="div_com div_com3v">
+            <input id="Add_Message_Btn" class="input_subm" type="button" value="Отправить" />
+        </div>
+    </form>
+    <div id="dv_mess"></div>
+</div> 
