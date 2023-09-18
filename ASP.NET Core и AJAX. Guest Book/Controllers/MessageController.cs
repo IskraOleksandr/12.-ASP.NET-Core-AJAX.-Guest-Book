@@ -2,40 +2,37 @@
 using ASP.NET_Core_и_AJAX._Guest_Book.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace ASP.NET_Core_и_AJAX._Guest_Book.Controllers
 {
     public class MessageController : Controller
     {
-        IRepository _repository; 
+        IRepository _repository;
 
         public MessageController(IRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task<ActionResult> Index()
-        {
-            if (HttpContext.Session.GetString("Login") != null)
-            {
-                var model = await _repository.GetMessages(); 
-                return View(model);
-            }
-            else
-                return RedirectToAction("Login", "User");
+        public ActionResult Index()
+        { 
+            return View(); 
         }
 
-        public async Task<ActionResult> Guest()
-        {
-            var model = await _repository.GetMessages(); 
-            return View("Index", model);
+        [HttpGet]
+        public async Task<IActionResult> GetMessages()
+        { 
+            var tmp = await _repository.GetMessages();
+            string response = JsonConvert.SerializeObject(tmp);
+            return Json(response);
         }
-
+         
         public ActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Login", "User");
+            return Json("Ви выйшли"); 
         }
 
         [HttpGet]
@@ -51,7 +48,7 @@ namespace ASP.NET_Core_и_AJAX._Guest_Book.Controllers
             var user_login = HttpContext.Session.GetString("Login");
 
             if (HttpContext.Session.GetString("Login") == null)
-                return RedirectToAction("Login", "User");
+                return Json("Сообщение не удалось добавить!");
 
             var user = await _repository.GetUser(user_login);
 
@@ -64,8 +61,7 @@ namespace ASP.NET_Core_и_AJAX._Guest_Book.Controllers
 
             await _repository.AddMessage(mes);
             await _repository.Save(); 
-
-            return RedirectToAction("Index", "Message");
+            return Json("Сообщение успешно добавлено!"); 
         }
     }
 }
