@@ -59,7 +59,7 @@ html {
 
 .dv1 {
     width: 800px;
-    margin: 0px 0px auto 180px;
+    margin: 0px auto 0px auto;
     height: 400px;
 }
 
@@ -73,7 +73,7 @@ html {
 
 .div_com_t {
     margin: 0px auto -35px 0px;
-    width: 800px;
+    width: 810px;
     height: 75px;
 }
 
@@ -85,12 +85,23 @@ html {
     width: 450px;
     display: block;
     text-align: left;
-    margin: 43px 0px 0px 0px;
+    margin: 47px 0px 0px 0px;
     height: 25px;
     font-size: 20px;
     color: red;
-    border-radius: 5px; 
+    border-radius: 5px;
     float: right;
+}
+
+.span_error1 {
+    width: 450px;
+    display: block;
+    text-align: left;
+    height: 25px;
+    font-size: 20px;
+    color: red;
+    border-radius: 5px;
+    float: left;
 }
 
 .input1 {
@@ -153,10 +164,8 @@ html {
     padding-top: 15px;
     padding-bottom: 15px;
     background-color: #0084ff;
-    
-    padding-left:15px;
-    padding-right:15px;
-
+    padding-left: 15px;
+    padding-right: 15px;
     white-space: pre-wrap;
     word-wrap: break-word;
 }

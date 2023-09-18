@@ -65,7 +65,7 @@ namespace ASP.NET_Core_и_AJAX._Guest_Book.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterModel reg)
         {
             if (ModelState.IsValid)
