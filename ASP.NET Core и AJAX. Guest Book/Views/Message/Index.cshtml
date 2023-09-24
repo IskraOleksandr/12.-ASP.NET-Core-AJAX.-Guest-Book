@@ -6,17 +6,17 @@
 }
 <header>
     <div class="my_nav">
-        <a asp-controller="Home" asp-action="Guest" class="active">Гостевая книга</a>
-        <a data_dialog_title="Register model" asp-action="Register" asp-controller="Account" id="RegisterDialog">Регистрация</a>
+        <a class="active">Гостевая книга</a>
+        <a data_dialog_title="Register model" asp-action="Register" asp-controller="User" id="RegisterDialog">Регистрация</a>
 
         @if (Context.Session.GetString("Login") == null)
         {
-            <a style="float: right;" asp-controller="Account" asp-action="Login" id="LoginDialog" data_dialog_title="Login model">Вход</a>
+            <a style="float: right;" asp-controller="User" asp-action="Login" id="LoginDialog" data_dialog_title="Login model">Вход</a>
         }
         else
         {
-            <a asp-controller="Home" asp-action="addMessage" id="addMessageDialog" data_dialog_title="Add Message model">Добавить отзыв</a>
-            <a style="float: right;" asp-controller="Home" asp-action="Logout">Выход</a>
+            <a asp-controller="Message" asp-action="addMessage" id="addMessageDialog" data_dialog_title="Add Message model">Добавить отзыв</a>
+            <a style="float: right;" asp-controller="Message" asp-action="Logout">Выход</a>
             <a class="active" style="float: right;">Здравствуйте, @Context.Session.GetString("Login")</a>
         }
 
@@ -25,13 +25,13 @@
 </header>
 <br>
 <div>
-    @foreach (var mess in ViewBag.Message)
+    @foreach (var item in Model)
     {
         <br />
         <div class="div_mess">
-            <label class="label1">@mess.User.Login</label>
-            <p class="p1">@mess.MessageText</p>
-            <label class="label2">@mess.MessageDate</label>
+            <label class="label1">@item.User.Login</label>
+            <p class="p1">@item.MessageText</p>
+            <label class="label2">@item.MessageDate</label>
         </div>
     }
 </div>
@@ -72,7 +72,7 @@
                             text: "Сохранить",
                             click: function () {
                                 $.ajax({
-                                    url: "@Url.Action("Register", "Account")",
+                                    url: "@Url.Action("Register", "User")",
                                     type: "POST",
                                     data: $('form').serialize(),
                                     datatype: "json",
@@ -103,7 +103,7 @@
                             text: "Войти",
                             click: function () {
                                 $.ajax({
-                                    url: "@Url.Action("Login", "Account")",
+                                    url: "@Url.Action("Login", "User")",
                                     type: "POST",
                                     data: $('form').serialize(),
                                     datatype: "json",
@@ -135,7 +135,7 @@
                             text: "Отправить",
                             click: function () {
                                 $.ajax({
-                                    url: "@Url.Action("addMessage", "Home")",
+                                    url: "@Url.Action("addMessage", "Message")",
                                     type: "POST",
                                     data: $('form').serialize(),
                                     datatype: "json",

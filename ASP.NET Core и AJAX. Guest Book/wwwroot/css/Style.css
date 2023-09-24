@@ -1,12 +1,15 @@
-﻿.my_nav {
+﻿
+/*-------------------------------------*/
+
+.my_nav {
     background-color: #333;
     overflow: hidden;
     margin: -8px;
 }
 
     .my_nav a {
-        float: left;
         color: #f2f2f2;
+        float: left;
         text-align: center;
         padding: 20px 30px;
         text-decoration: none;
@@ -29,20 +32,35 @@ html {
 
 * {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    /* border: solid 1px red; */
 }
 
-.div_com {
-    width: 450px;
-    height: 65px;
-    margin: 10px auto 12px auto;
+/*-------------------------------------*/
+
+.input1 {
+    height: 25px;
+    width: 360px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px rgb(42, 117, 255);
+    font-size: 18px;
+    float: left;
+    margin-top: 5px;
+}
+
+.span_error {
+    font-size: 18px;
+    margin-top: 7px;
+    color: red;
+    width: 410px;
+    display: block;
+    text-align: left;
 }
 
 .input_subm {
     width: 150px;
-    height: 40px;
+    height: 30px;
     color: white;
     border: none;
+    text-align: center;
     box-shadow: 2px 2px 2px navy;
     font-size: 20px;
     border-radius: 5px;
@@ -53,66 +71,11 @@ html {
         color: white;
         border: solid 1px navy;
         box-shadow: 2px 2px 2px rgb(0, 0, 0);
-        height: 40px;
+        height: 30px;
         background-color: rgb(0, 113, 206);
     }
 
-.dv1 {
-    width: 800px;
-    margin: 0px auto 0px auto;
-    height: 400px;
-}
-
-.div_com_t1 {
-    width: 450px;
-    height: 65px;
-    margin: -69px auto 12px auto;
-    /**/
-    float: left;
-}
-
-.div_com_t {
-    margin: 0px auto -35px 0px;
-    width: 810px;
-    height: 75px;
-}
-
-.dv1 {
-    margin-top: -15px;
-}
-
-.span_error {
-    width: 450px;
-    display: block;
-    text-align: left;
-    margin: 47px 0px 0px 0px;
-    height: 25px;
-    font-size: 20px;
-    color: red;
-    border-radius: 5px;
-    float: right;
-}
-
-.span_error1 {
-    width: 450px;
-    display: block;
-    text-align: left;
-    height: 25px;
-    font-size: 20px;
-    color: red;
-    border-radius: 5px;
-    float: left;
-}
-
-.input1 {
-    height: 25px;
-    width: 340px;
-    border-radius: 5px;
-    box-shadow: 5px 5px 5px rgb(0, 89, 255);
-    font-size: 18px;
-    float: left;
-    margin-top: 40px;
-}
+/*-------------------------------------*/
 
 .label {
     padding: 3px;
@@ -152,6 +115,12 @@ html {
     text-align: right;
 }
 
+
+.label3 {
+    font-size: 22px;
+    float: left;
+}
+
 .p1 {
     width: 510px;
     min-height: max-content;
@@ -170,6 +139,59 @@ html {
     word-wrap: break-word;
 }
 
+.h1_n {
+    font-size: 46px;
+    width: initial;
+    text-align: left;
+    font-weight: bold;
+    margin-top: 0px;
+}
+
+.text_area {
+    max-height: 200px;
+    max-width: 450px;
+    min-height: 200px;
+    min-width: 450px;
+    border: solid 1px navy;
+    border-radius: 5px;
+    width: 450px;
+}
+
+/*-------------------------------------*/
+
+.dv1 {
+    width: 800px;
+    height: 400px;
+    margin-top: -15px;
+}
+
+.dv_w {
+    width: 365px;
+}
+
+.dv_h {
+    height: 280px;
+}
+
+.div_com {
+    width: 450px;
+    height: 65px;
+    margin: 10px auto 12px auto;
+}
+
+.div_com_t {
+    margin: 0px auto -35px 0px;
+    width: 800px;
+    height: 75px;
+}
+
+.div_com_t1 {
+    width: 450px;
+    height: 65px;
+    margin: -69px auto 12px auto;
+    float: left;
+}
+
 .div_mess {
     width: max-content;
     margin: 0px auto 0px auto;
@@ -185,25 +207,18 @@ html {
 }
 
 .div_h1 {
-    width: 990px;
+    width: 365px;
     margin: 15px auto 0px auto;
     height: 60px;
+    font-size: 38px
 }
 
-.h1_n {
-    font-size: 46px;
-    width: initial;
-    text-align: left;
-    font-weight: bold;
-    margin-top: 0px;
+.div_l3n {
+    width: 365px;
+    margin-top: 5px;
 }
 
-.text_area {
-    max-height: 300px;
-    max-width: 600px;
-    min-height: 200px;
-    min-width: 450px;
-    border: solid 1px navy;
-    border-radius: 5px;
-    width: 510px;
+.div_l4 {
+    height: 70px;
+    width: 365px;
 }
