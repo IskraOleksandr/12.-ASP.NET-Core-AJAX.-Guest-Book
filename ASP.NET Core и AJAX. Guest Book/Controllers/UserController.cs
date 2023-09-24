@@ -17,23 +17,26 @@ namespace ASP.NET_Core_и_AJAX._Guest_Book.Controllers
 
         public ActionResult Login()
         {
-            return View();
+            return PartialView();
         }
 
-        [HttpPost] 
-        public async Task<IActionResult> Login(LoginModel logon)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login([Bind("Login,Password")] LoginModel logon)
         {
             if (ModelState.IsValid)
             {
                 var users = await _repository.GetUsers();
                 if (users.Count == 0)
-                { 
-                    return Json("Не верный логин или пароль!");
+                {
+                    ModelState.AddModelError("", "Не верный логин или пароль!");
+                    return PartialView(logon);
                 }
                 var users_t = users.Where(a => a.Login == logon.Login);
                 if (users_t.ToList().Count == 0)
-                { 
-                    return Json("Не верный логин или пароль!");
+                {
+                    ModelState.AddModelError("", "Не верный логин или пароль!");
+                    return PartialView(logon);
                 }
                 var user = users_t.First();
                 string? salt = user.Salt;
@@ -47,26 +50,24 @@ namespace ASP.NET_Core_и_AJAX._Guest_Book.Controllers
                     hash.Append(string.Format("{0:X2}", byteHash[i]));
 
                 if (user.Password != hash.ToString())
-                { 
-                    return Json("Не верный логин или пароль!"); 
+                {
+                    ModelState.AddModelError("", "Не верный логин или пароль!");
+                    return PartialView(logon);
                 }
                 HttpContext.Session.SetString("Login", user.Login);
-
-                string response = user.Login; 
-                return Json(response); 
+                return PartialView("~/Views/Message/Success.cshtml");
             }
-             
-            return Json("Не удалось зайти"); 
+            return PartialView(logon);
         }
 
         public IActionResult Register()
         {
-            return View();
+            return PartialView("Register");
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterModel reg)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register([Bind("Id,Login,Password,PasswordConfirm")] RegisterModel reg)
         {
             if (ModelState.IsValid)
             {
@@ -96,11 +97,10 @@ namespace ASP.NET_Core_и_AJAX._Guest_Book.Controllers
 
                 await _repository.AddUser(user);
                 await _repository.Save();
-                string response = "Студент успешно добавлен!"; 
-                return Json(response); 
+                return PartialView("~/Views/Message/Success.cshtml");
             }
 
-            return Json("Не удалось зарегистрироватися!"); 
+            return PartialView("Register");
         }
     }
 }

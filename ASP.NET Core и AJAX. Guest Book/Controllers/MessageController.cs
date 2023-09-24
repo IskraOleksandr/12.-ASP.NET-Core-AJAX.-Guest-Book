@@ -16,30 +16,22 @@ namespace ASP.NET_Core_и_AJAX._Guest_Book.Controllers
             _repository = repository;
         }
 
-        public ActionResult Index()
-        { 
-            return View(); 
-        }
+        public async Task<ActionResult> Index()
+        {
+            var model = await _repository.GetMessages();
+            return View("Index", model);
+        } 
 
-        [HttpGet]
-        public async Task<IActionResult> GetMessages()
-        { 
-            var tmp = await _repository.GetMessages();
-            string response = JsonConvert.SerializeObject(tmp);
-            return Json(response);
-        }
-         
         public ActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return Json("Ви выйшли"); 
+            return RedirectToAction("Index");
         }
-
+         
         [HttpGet]
-
-        public IActionResult Create()
+        public IActionResult addMessage()
         {
-            return View();
+            return PartialView("addMessage");
         }
 
         [HttpPost]
@@ -48,7 +40,7 @@ namespace ASP.NET_Core_и_AJAX._Guest_Book.Controllers
             var user_login = HttpContext.Session.GetString("Login");
 
             if (HttpContext.Session.GetString("Login") == null)
-                return Json("Сообщение не удалось добавить!");
+                return PartialView("~/Views/User/Login.cshtml");
 
             var user = await _repository.GetUser(user_login);
 
@@ -60,8 +52,8 @@ namespace ASP.NET_Core_и_AJAX._Guest_Book.Controllers
             };
 
             await _repository.AddMessage(mes);
-            await _repository.Save(); 
-            return Json("Сообщение успешно добавлено!"); 
+            await _repository.Save();
+            return PartialView("~/Views/Message/Success.cshtml");
         }
     }
 }
