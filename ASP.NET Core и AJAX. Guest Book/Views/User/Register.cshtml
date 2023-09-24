@@ -1,5 +1,39 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model ASP.NET_Core_и_AJAX._Guest_Book.Models.RegisterModel
+
+<div class="dv_w">
+    <div class="dv1 dv_w">
+        <div class="div_h1 dv_w">
+            <h3 class="h1_n dv_w">Регистрация</h3>
+        </div>
+        <div class="dv_w">
+            <form asp-action="Register">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="div_l3n dv_w">
+                    <div class="div_l4 dv_w">
+                        <label asp-for="Login" class="label3"></label>
+                        <input asp-for="Login" class="input1" type="text" />
+                    </div>
+                    <span asp-validation-for="Login" class="span_error dv_w"></span>
+                </div>
+
+                <div class="div_l3n dv_w">
+                    <div class="div_l4 dv_w">
+                        <label asp-for="Password" class="label3"></label>
+                        <input asp-for="Password" class="input1" />
+                    </div>
+                    <span asp-validation-for="Password" class="span_error dv_w"></span>
+                </div>
+
+                <div class="div_l3n dv_w">
+                    <div class="div_l4 dv_w">
+                        <label asp-for="PasswordConfirm" class="label3"></label>
+                        <input asp-for="PasswordConfirm" class="input1" />
+                    </div>
+                    <span asp-validation-for="PasswordConfirm" class="span_error dv_w"></span>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
